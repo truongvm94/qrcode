@@ -3,64 +3,62 @@
 @{
     ViewData["Title"] = "View Data";
 }
+<link rel="stylesheet" href="~/css/view.css" />
 
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
 
 <div class="container">
-    <div class="row">
 
-        <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>HoTen</th>
-                    <th>SoDienThoai</th>
-                    <th>Email</th>
-                    <th>DiaChi</th>
-                    <th>TrangThai</th>
-                </tr>
-            </thead>
-            @*            <tfoot>
+    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
             <tr>
-            <th>HoTen</th>
-            <th>SoDienThoai</th>
-            <th>Email</th>
-            <th>DiaChi</th>
+                <th>HoTen</th>
+                <th>SoDienThoai</th>
+                <th>Email</th>
+                <th>DiaChi</th>
+                <th>TrangThai</th>
             </tr>
-            </tfoot>*@
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr data-href="@Url.Action("DetailData", "Home", new { modelId = item.Id })">
-                        <td>@item.HoTen</td>
-                        <td>@item.SoDienThoai</td>
-                        <td>@item.Email</td>
-                        <td>@item.DiaChi</td>
-                        <td>
-                            <select asp-for="@item.TrangThai">
-                                <option value="">-- Select --</option>
-                                @if (item.TrangThai.HasValue)
+        </thead>
+        @*            <tfoot>
+        <tr>
+        <th>HoTen</th>
+        <th>SoDienThoai</th>
+        <th>Email</th>
+        <th>DiaChi</th>
+        </tr>href="@Url.Action("DetailData", "Home", new { modelId = item.Id })
+        </tfoot>*@
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a href="@Url.Action("DetailData", "Home", new { modelId = item.Id })">@item.HoTen</a></td>
+                    <td>@item.SoDienThoai</td>
+                    <td>@item.Email</td>
+                    <td>@item.DiaChi</td>
+                    <td>
+                        <select asp-for="@item.TrangThai">
+                            <option value="">-- Select --</option>
+                            @if (item.TrangThai.HasValue)
+                            {
+                                @foreach (var value in Enum.GetValues(typeof(Status)))
                                 {
-                                    @foreach (var value in Enum.GetValues(typeof(Status)))
-                                    {
-                                        <option value="@value" selected="@value.Equals(item.TrangThai.Value)">@value</option>
-                                        
-                                    }
-                                }
-                                else
-                                {
-                                    @foreach (var value in Enum.GetValues(typeof(Status)))
-                                    {
-                                        <option value="@value">@value</option>
-                                    }
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                    <option value="@value" selected="@value.Equals(item.TrangThai.Value)">@value</option>
 
-    </div>
+                                }
+                            }
+                            else
+                            {
+                                @foreach (var value in Enum.GetValues(typeof(Status)))
+                                {
+                                    <option value="@value">@value</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
