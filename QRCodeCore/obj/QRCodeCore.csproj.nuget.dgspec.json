@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Workspace\\QRCodeCore\\QRCodeCore\\QRCodeCore.csproj": {}
+    "D:\\Workspace\\QRCode\\qrcode\\QRCodeCore\\QRCodeCore.csproj": {}
   },
   "projects": {
-    "D:\\Workspace\\QRCodeCore\\QRCodeCore\\QRCodeCore.csproj": {
+    "D:\\Workspace\\QRCode\\qrcode\\QRCodeCore\\QRCodeCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Workspace\\QRCodeCore\\QRCodeCore\\QRCodeCore.csproj",
+        "projectUniqueName": "D:\\Workspace\\QRCode\\qrcode\\QRCodeCore\\QRCodeCore.csproj",
         "projectName": "QRCodeCore",
-        "projectPath": "D:\\Workspace\\QRCodeCore\\QRCodeCore\\QRCodeCore.csproj",
+        "projectPath": "D:\\Workspace\\QRCode\\qrcode\\QRCodeCore\\QRCodeCore.csproj",
         "packagesPath": "C:\\Users\\TruongVM\\.nuget\\packages\\",
-        "outputPath": "D:\\Workspace\\QRCodeCore\\QRCodeCore\\obj\\",
+        "outputPath": "D:\\Workspace\\QRCode\\qrcode\\QRCodeCore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\TruongVM\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,18 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.8.3, )"
+            },
+            "Hangfire.AspNetCore": {
+              "target": "Package",
+              "version": "[1.8.3, )"
+            },
+            "Hangfire.Core": {
+              "target": "Package",
+              "version": "[1.8.3, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[5.0.2, )"
@@ -47,6 +59,10 @@
             "QRCoder": {
               "target": "Package",
               "version": "[1.4.3, )"
+            },
+            "Quartz": {
+              "target": "Package",
+              "version": "[3.6.3, )"
             }
           },
           "imports": [

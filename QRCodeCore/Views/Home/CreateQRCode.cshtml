@@ -1,28 +1,54 @@
 ﻿@model QRCodeCore.Models.QRCodeModel
 
 @{
-    ViewData["Title"] = "www.compilemode.com";
+    ViewData["Title"] = "Quản lý công";
 }
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateQRCode">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="QRCodeText" class="control-label"></label>
-                <input asp-for="QRCodeText" class="form-control" />
-                <span asp-validation-for="QRCodeText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Generate QR Code" class="btn btn-primary text-center" />
-            </div>
+            <h1>@ViewBag.PathQr</h1>
             <div class="form-group">
 
                 <img src="@ViewBag.QrCodeUri" class="img-thumbnail" />
             </div>
+            Mã QR sẽ hết hạn sau :
+            <label id="lblCountDown" class="form-text text-danger d-inline"></label>
         </form>
     </div>
 </div>
 @section Scripts {
+    <script language="javaScript" type="text/javascript">
+        var i = 1;
+        var _StartTime = "300000"; //MiliSecound - Here it is 5 minutes
+        var _seconds = 0;
+        var _minutes = 0;
+        var _hrs = 0;
+        var pad = "00";
+        setTimeout("location.reload(true);", _StartTime);
+        function GetCount() {
+
+            var _s = _StartTime;
+
+            var ms = _s % 1000;
+            _s = (_s - ms) / 1000;
+            var _seconds = _s % 60;
+            _s = (_s - _seconds) / 60;
+            var _minutes = _s % 60;
+            var _hrs = (_s - _minutes) / 60;
+
+            var Sec = pad.substring(0, pad.length - String(_seconds).length) + _seconds;
+            var Min = pad.substring(0, pad.length - String(_minutes).length) + _minutes;
+            var Hr = pad.substring(0, pad.length - String(_hrs).length) + _hrs;
+
+            document.getElementById('lblCountDown').innerText = Hr + ":" + Min + ":" + Sec;
+            _StartTime = _StartTime - 1000;
+
+            if (_StartTime >= 0)
+                setTimeout("GetCount()", 1000);
+        }
+        window.onload = GetCount;
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

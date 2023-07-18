@@ -8,6 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
+using QuartzProjcect.Quartz;
 
 namespace QRCodeCore
 {
@@ -24,6 +28,21 @@ namespace QRCodeCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+            services.AddSingleton<HelloWorldJob>();
+
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HelloWorldJob),
+                cronExpression: "5/1 * 0 ? * * *"));
+
+            services.AddHostedService<QuartzHostedService>();
+            services.AddControllers();
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "QuartzProjcect", Version = "v1" });
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,6 +12,8 @@ using System.Text.Json;
 using static QRCoder.PayloadGenerator;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
+using QuartzProjcect.Quartz;
 
 namespace QRCodeCore.Controllers
 {
@@ -33,6 +35,62 @@ namespace QRCodeCore.Controllers
 
         public IActionResult InsertData()
         {
+            var getExpired = HttpContext.Request.Query["Id"];
+
+            double tmpTimeSpand = Convert.ToDouble(getExpired.ToString());
+            DateTime dateExpired = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            dateExpired = dateExpired.AddSeconds(tmpTimeSpand).ToLocalTime();
+            //dateExpired = dateExpired.AddMinutes(5);
+
+            var dtNow = DateTime.Now;
+            if (dateExpired >= dtNow)
+            {
+                return View();
+            }
+            else
+            {
+                // hết hạn token => bắt quét lại
+                return RedirectToAction("CreateQRCode");
+            }
+
+            //bool existFile = System.IO.File.Exists(tmpFile);
+            //if(existFile)
+            //{
+            //    using (StreamReader r = new StreamReader(tmpFile))
+            //    {
+            //        string json = r.ReadToEnd();
+            //        var items = JsonConvert.DeserializeObject<List<CheckExpiredModel>>(json);
+
+            //        var item = items.FirstOrDefault(e => e.Id == getExpired);
+            //        if(item is not null)
+            //        {
+            //            double tmpTimeSpand = Convert.ToDouble(item.Expired);
+            //            DateTime dateExpired = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            //            dateExpired = dateExpired.AddSeconds(tmpTimeSpand).ToLocalTime();
+            //            //dateExpired = dateExpired.AddMinutes(5);
+
+            //            var dtNow = DateTime.Now;
+            //            if(dateExpired >= dtNow)
+            //            {
+            //                return View();
+            //            }
+            //            else
+            //            {
+            //                // hết hạn token => bắt quét lại
+            //                return RedirectToAction("CreateQRCode");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            // Ko có id hoặc hết hạn => bắn messeage ra màn hình báo lỗi
+            //            return RedirectToAction("CreateQRCode");
+
+            //        }
+
+            //    }
+
+
+            //}
             return View();
         }
 
@@ -71,11 +129,6 @@ namespace QRCodeCore.Controllers
             return View();
         }
 
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -85,13 +138,25 @@ namespace QRCodeCore.Controllers
         [HttpGet]
         public IActionResult CreateQRCode()
         {
-            return View();
-        }
+            string tmpPath = System.IO.Path.GetTempPath();
+            string tmpFile = tmpPath + "expiredjob.json";
+            bool existFile = System.IO.File.Exists(tmpFile);
+            string pathQr = string.Empty;
+            if (existFile)
+            {
+                using (StreamReader r = new StreamReader(tmpFile))
+                {
+                    string json = r.ReadToEnd();
+                    var items = JsonConvert.DeserializeObject<List<CheckExpiredModel>>(json);
+                    //#TODO lay ngay con hieu luc moi nhat
+                    //pathQr = items[0].Path;
+                    pathQr = items.Last().Path;
+                }
 
-        [HttpPost]
-        public IActionResult CreateQRCode(QRCodeModel model)
-        {
-            var WebUri = new Url(model.QRCodeText);
+
+            }
+
+            var WebUri = new Url(pathQr);
             string UriPayload = WebUri.ToString();
             QRCodeGenerator QrGenerator = new QRCodeGenerator();
             QRCodeData QrCodeInfo = QrGenerator.CreateQrCode(UriPayload, QRCodeGenerator.ECCLevel.Q);
@@ -102,6 +167,13 @@ namespace QRCodeCore.Controllers
 
             string QrUri = string.Format("data:image/png;base64,{0}", Convert.ToBase64String(BitmapArray));
             ViewBag.QrCodeUri = QrUri;
+            ViewBag.PathQr = pathQr;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateQRCode(QRCodeModel model)
+        {
             return View();
         }
 
