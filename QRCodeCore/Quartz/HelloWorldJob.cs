@@ -30,7 +30,7 @@ namespace QuartzProjcect.Quartz
             var tmpDataList = new CheckExpiredModel()
             {
                 Id = tmpId,
-                Path = "https://localhost:44345/Home/InsertData/?id=" + tmpExpired,
+                Path = "http://qrcode-vhec.vn/Home/InsertData/?id=" + tmpExpired,
                 Expired = tmpExpired
             };
 
