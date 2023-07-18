@@ -2,3 +2,16 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+$(document).ready(function () {
+    $("#example").DataTable();
+});
+
+$(document).ready(function () {
+    $('#example tbody tr').click(function () {
+        var url = $(this).data('href');
+        if (url) {
+            window.location.href = url;
+        }
+    });
+});
