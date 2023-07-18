@@ -1,0 +1,67 @@
+﻿@model InsertDataModel
+
+@{
+    ViewData["Title"] = "Nhập thông tin";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+@using (Html.BeginForm("DetailData", "Home"))
+{
+    <div class="row">
+         <input type="text" name="Id" value="@Model?.Id" class="form-control" hidden />
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nhập Họ Tên</label>
+                <input type="text" name="HoTen" value="@Model?.HoTen" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nhập SDT</label>
+                <input type="number" name="SoDienThoai" value="@Model?.SoDienThoai" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nhập Email</label>
+                <input type="text" name="Email" value="@Model?.Email" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nhập Địa Chỉ</label>
+                <input type="text" name="DiaChi" value="@Model?.DiaChi" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Trạng thái</label>
+                <select asp-for="@Model.TrangThai">
+                    <option value="">-- Select --</option>
+                    @if (Model.TrangThai.HasValue)
+                    {
+                        @foreach (var value in Enum.GetValues(typeof(Status)))
+                        {
+                            <option value="@value" selected="@value.Equals(Model.TrangThai.Value)">@value</option>
+                        }
+                    }
+                    else
+                    {
+                        @foreach (var value in Enum.GetValues(typeof(Status)))
+                        {
+                            <option value="@value">@value</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <input type="submit" value="Gửi" class="btn btn-primary text-center" />
+        <input type="button" value="Thêm thông tin" class="btn btn-info text-center" />
+    </div>
+}

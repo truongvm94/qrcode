@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using QuartzProjcect.Quartz;
+using System.Security.AccessControl;
+using System.Linq;
 
 namespace QRCodeCore.Controllers
 {
@@ -28,10 +30,105 @@ namespace QRCodeCore.Controllers
 
         public IActionResult ViewData()
         {
-            var data = new InsertDataModel();
-            return View();
+            try
+            {
+                string tmpPath = System.IO.Path.GetTempPath();
+                string tmpFile = tmpPath + "jsondata.json";
+
+
+                string jsonContent = System.IO.File.ReadAllText(tmpFile);
+
+                var jsonObject = JsonConvert.DeserializeObject<List<InsertDataModel>>(jsonContent);
+
+                //var data = new InsertDataModel();
+                return View(jsonObject);
+            }
+            catch 
+            {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
+
         }
 
+        [HttpGet]
+        public IActionResult DetailData(string modelId)
+        {
+            try
+            {
+                string tmpPath = System.IO.Path.GetTempPath();
+                string tmpFile = tmpPath + "jsondata.json";
+
+
+                string jsonContent = System.IO.File.ReadAllText(tmpFile);
+
+                var jsonObject = JsonConvert.DeserializeObject<List<InsertDataModel>>(jsonContent);
+
+                var data = jsonObject.Where(x => x.Id == modelId).FirstOrDefault();
+
+                return View(data);
+            }
+            catch
+            {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DetailData(InsertDataModel model)
+        {
+            var dataList = new List<InsertDataModel>();
+            var jsonData = string.Empty;
+            string tmpPath = System.IO.Path.GetTempPath();
+            string tmpFile = tmpPath + "jsondata.json";
+
+            bool existFile = System.IO.File.Exists(tmpFile);
+            if (!existFile)
+            {
+                try
+                {
+                    jsonData = JsonConvert.SerializeObject(dataList);
+                    System.IO.File.WriteAllText(tmpFile, jsonData);
+                }
+                catch
+                {
+                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                }
+
+            }
+            else
+            {
+                try
+                {
+                    // Read existing json data
+                    jsonData = System.IO.File.ReadAllText(tmpFile);
+
+                    // De-serialize to object or create new list
+                    dataList = JsonConvert.DeserializeObject<List<InsertDataModel>>(jsonData)
+                                         ?? new List<InsertDataModel>();
+
+                    var data = dataList.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                    if (data != null)
+                    {
+                        data.DiaChi = model.DiaChi;
+                        data.HoTen = model.HoTen;
+                        data.Email = model.Email;
+                        data.SoDienThoai = model.SoDienThoai;
+                        data.TrangThai = model.TrangThai;
+                    }
+
+                    jsonData = JsonConvert.SerializeObject(dataList);
+                    System.IO.File.WriteAllText(tmpFile, jsonData);
+                    return View(data);
+                }
+                catch (Exception ex)
+                {
+                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                }
+            }
+
+            return View(model);
+        }
 
         public IActionResult InsertData()
         {
@@ -100,29 +197,48 @@ namespace QRCodeCore.Controllers
             var jsonData = string.Empty;
             string tmpPath = System.IO.Path.GetTempPath();
             string tmpFile = tmpPath + "jsondata.json";
+
             bool existFile = System.IO.File.Exists(tmpFile);
             if (!existFile)
             {
-                jsonData = JsonConvert.SerializeObject(dataList);
-                System.IO.File.WriteAllText(tmpFile, jsonData);
+                try
+                {
+                    jsonData = JsonConvert.SerializeObject(dataList);
+                    System.IO.File.WriteAllText(tmpFile, jsonData);
+                }
+                catch
+                {
+                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                }
+
             }
             else
             {
-                // Read existing json data
-                jsonData = System.IO.File.ReadAllText(tmpFile);
-                // De-serialize to object or create new list
-                dataList = JsonConvert.DeserializeObject<List<InsertDataModel>>(jsonData)
-                                     ?? new List<InsertDataModel>();
-                dataList.Add(new InsertDataModel
+                try
                 {
-                    DiaChi = model.DiaChi,
-                    HoTen = model.HoTen,
-                    Email = model.Email,
-                    SoDienThoai = model.SoDienThoai
-                });
+                    // Read existing json data
+                    jsonData = System.IO.File.ReadAllText(tmpFile);
 
-                jsonData = JsonConvert.SerializeObject(dataList);
-                System.IO.File.WriteAllText(tmpFile, jsonData);
+
+                    // De-serialize to object or create new list
+                    dataList = JsonConvert.DeserializeObject<List<InsertDataModel>>(jsonData)
+                                         ?? new List<InsertDataModel>();
+                    dataList.Add(new InsertDataModel
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        DiaChi = model.DiaChi,
+                        HoTen = model.HoTen,
+                        Email = model.Email,
+                        SoDienThoai = model.SoDienThoai
+                    });
+
+                    jsonData = JsonConvert.SerializeObject(dataList);
+                    System.IO.File.WriteAllText(tmpFile, jsonData);
+                }
+                catch (Exception ex)
+                {
+                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                }
             }
 
             return View();

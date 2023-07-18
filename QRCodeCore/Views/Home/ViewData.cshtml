@@ -1,6 +1,9 @@
-﻿@{
+﻿@model List<InsertDataModel>
+
+@{
     ViewData["Title"] = "View Data";
 }
+
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
@@ -15,28 +18,49 @@
                     <th>SoDienThoai</th>
                     <th>Email</th>
                     <th>DiaChi</th>
+                    <th>TrangThai</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>HoTen</th>
-                    <th>SoDienThoai</th>
-                    <th>Email</th>
-                    <th>DiaChi</th>
-                </tr>
-            </tfoot>
+            @*            <tfoot>
+            <tr>
+            <th>HoTen</th>
+            <th>SoDienThoai</th>
+            <th>Email</th>
+            <th>DiaChi</th>
+            </tr>
+            </tfoot>*@
             <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr data-href="@Url.Action("DetailData", "Home", new { modelId = item.Id })">
+                        <td>@item.HoTen</td>
+                        <td>@item.SoDienThoai</td>
+                        <td>@item.Email</td>
+                        <td>@item.DiaChi</td>
+                        <td>
+                            <select asp-for="@item.TrangThai">
+                                <option value="">-- Select --</option>
+                                @if (item.TrangThai.HasValue)
+                                {
+                                    @foreach (var value in Enum.GetValues(typeof(Status)))
+                                    {
+                                        <option value="@value" selected="@value.Equals(item.TrangThai.Value)">@value</option>
+                                        
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var value in Enum.GetValues(typeof(Status)))
+                                    {
+                                        <option value="@value">@value</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
 
     </div>
 </div>
-
-
-
