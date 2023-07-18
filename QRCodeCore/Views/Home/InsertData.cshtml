@@ -21,21 +21,23 @@
                 <input type="number" name="SoDienThoai" value="" class="form-control" />
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Nhập Email</label>
-                <input type="text" name="Email" value="" class="form-control" />
+        <div class="collapse m-0 row w-100" id="collapseExample">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nhập Email</label>
+                    <input type="text" name="Email" value="" class="form-control" />
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Nhập Địa Chỉ</label>
-                <input type="text" name="DiaChi" value="" class="form-control" />
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nhập Địa Chỉ</label>
+                    <input type="text" name="DiaChi" value="" class="form-control" />
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <input type="submit" value="Gửi" class="btn btn-primary text-center" />
-        <input type="button" value="Thêm thông tin" class="btn btn-info text-center" />
+        <input type="submit" value="Gửi" class="btn btn-primary text-center ml-3 mr-3" />
+        <input type="button" value="Thêm thông tin" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" class="btn btn-info text-center" />
     </div>
 }

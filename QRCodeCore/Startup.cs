@@ -21,7 +21,7 @@ namespace QRCodeCore
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -35,7 +35,7 @@ namespace QRCodeCore
 
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(HelloWorldJob),
-                cronExpression: "5/1 * 0 ? * * *"));
+                cronExpression: "0 0/5 * 1/1 * ? *"));
 
             services.AddHostedService<QuartzHostedService>();
             services.AddControllers();

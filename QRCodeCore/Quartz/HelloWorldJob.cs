@@ -31,7 +31,7 @@ namespace QuartzProjcect.Quartz
             {
                 Id = tmpId,
                 Path = "https://localhost:44345/Home/InsertData/?id=" + tmpExpired,
-                Expired = DateTime.Now.AddMinutes(5).Subtract(new DateTime(1970, 1, 1)).TotalMinutes.ToString()
+                Expired = tmpExpired
             };
 
             if (!existFile)
