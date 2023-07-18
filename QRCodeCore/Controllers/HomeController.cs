@@ -1,26 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using QRCodeCore.Models;
 using QRCoder;
 using System;
-using System.Web;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Text.Json;
+using System.Linq;
 using static QRCoder.PayloadGenerator;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
-using QuartzProjcect.Quartz;
-using System.Security.AccessControl;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Quartz.Spi;
-using Quartz;
-using Quartz.Impl;
 
 namespace QRCodeCore.Controllers
 {
@@ -154,45 +144,6 @@ namespace QRCodeCore.Controllers
                 // hết hạn token => bắt quét lại
                 return RedirectToAction("CreateQRCode");
             }
-
-            //bool existFile = System.IO.File.Exists(tmpFile);
-            //if(existFile)
-            //{
-            //    using (StreamReader r = new StreamReader(tmpFile))
-            //    {
-            //        string json = r.ReadToEnd();
-            //        var items = JsonConvert.DeserializeObject<List<CheckExpiredModel>>(json);
-
-            //        var item = items.FirstOrDefault(e => e.Id == getExpired);
-            //        if(item is not null)
-            //        {
-            //            double tmpTimeSpand = Convert.ToDouble(item.Expired);
-            //            DateTime dateExpired = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            //            dateExpired = dateExpired.AddSeconds(tmpTimeSpand).ToLocalTime();
-            //            //dateExpired = dateExpired.AddMinutes(5);
-
-            //            var dtNow = DateTime.Now;
-            //            if(dateExpired >= dtNow)
-            //            {
-            //                return View();
-            //            }
-            //            else
-            //            {
-            //                // hết hạn token => bắt quét lại
-            //                return RedirectToAction("CreateQRCode");
-            //            }
-            //        }
-            //        else
-            //        {
-            //            // Ko có id hoặc hết hạn => bắn messeage ra màn hình báo lỗi
-            //            return RedirectToAction("CreateQRCode");
-
-            //        }
-
-            //    }
-
-
-            //}
         }
 
         [HttpPost]
@@ -270,7 +221,7 @@ namespace QRCodeCore.Controllers
                 var tmpDataList = new CheckExpiredModel()
                 {
                     Id = tmpId,
-                    Path = "http://qrcode-vhec.vn/Home/InsertData/?id=" + tmpExpired,
+                    Path = "http://qr-code.vhec.vn/Home/InsertData/?id=" + tmpExpired,
                     Expired = tmpExpired
                 };
                 // Read existing json data
