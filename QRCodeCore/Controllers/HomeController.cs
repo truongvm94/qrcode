@@ -16,6 +16,11 @@ using System.Linq;
 using QuartzProjcect.Quartz;
 using System.Security.AccessControl;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Quartz.Spi;
+using Quartz;
+using Quartz.Impl;
 
 namespace QRCodeCore.Controllers
 {
@@ -43,7 +48,7 @@ namespace QRCodeCore.Controllers
                 //var data = new InsertDataModel();
                 return View(jsonObject);
             }
-            catch 
+            catch
             {
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
@@ -259,6 +264,27 @@ namespace QRCodeCore.Controllers
             string pathQr = string.Empty;
             if (existFile)
             {
+                var tmpId = Guid.NewGuid().ToString();
+                var dataList = new List<CheckExpiredModel>();
+                string tmpExpired = DateTime.Now.AddMinutes(5).Subtract(new DateTime(1970, 1, 1)).TotalSeconds.ToString();
+                var tmpDataList = new CheckExpiredModel()
+                {
+                    Id = tmpId,
+                    Path = "http://qrcode-vhec.vn/Home/InsertData/?id=" + tmpExpired,
+                    Expired = tmpExpired
+                };
+                // Read existing json data
+                var jsonData = System.IO.File.ReadAllText(tmpFile);
+                // De-serialize to object or create new list
+                dataList = JsonConvert.DeserializeObject<List<CheckExpiredModel>>(jsonData)
+                                     ?? new List<CheckExpiredModel>();
+                dataList.Add(tmpDataList);
+
+                jsonData = JsonConvert.SerializeObject(dataList);
+                System.IO.File.WriteAllText(tmpFile, jsonData);
+                FileStream str = new FileStream(tmpFile,FileMode.Open);
+                str.Dispose();
+
                 using (StreamReader r = new StreamReader(tmpFile))
                 {
                     string json = r.ReadToEnd();
