@@ -4,17 +4,16 @@
     ViewData["Title"] = "住民票入力画面";
 }
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateQRCode">
-            @*<h1 style="display:none">@ViewBag.PathQr</h1>*@
-            <h1>@ViewBag.PathQr</h1>
+            <h1>住民票入力画面</h1>
+            @*<h1>@ViewBag.PathQr</h1>*@
             <div class="form-group">
 
                 <img src="@ViewBag.QrCodeUri" class="img-thumbnail" />
             </div>
-            Mã QR sẽ hết hạn sau :
-            <label id="lblCountDown" class="form-text text-danger d-inline"></label>
         </form>
     </div>
 </div>
