@@ -20,7 +20,7 @@ namespace QuartzProjcect.Quartz
         {
 
             var jsonData = string.Empty;
-            string tmpPath = System.IO.Path.GetTempPath();
+             string tmpPath = System.IO.Path.GetTempPath();
             string tmpFile = tmpPath + "expiredjob.json";
             bool existFile = System.IO.File.Exists(tmpFile);
 

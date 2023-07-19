@@ -127,23 +127,23 @@ namespace QRCodeCore.Controllers
 
         public IActionResult InsertData()
         {
-            var getExpired = HttpContext.Request.Query["Id"];
+            //var getExpired = HttpContext.Request.Query["Id"];
 
-            double tmpTimeSpand = Convert.ToDouble(getExpired.ToString());
-            DateTime dateExpired = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
-            dateExpired = dateExpired.AddSeconds(tmpTimeSpand).ToLocalTime();
-            //dateExpired = dateExpired.AddMinutes(5);
+            //double tmpTimeSpand = Convert.ToDouble(getExpired.ToString());
+            //DateTime dateExpired = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            //dateExpired = dateExpired.AddSeconds(tmpTimeSpand).ToLocalTime();
 
-            var dtNow = DateTime.Now;
-            if (dateExpired >= dtNow)
-            {
-                return View();
-            }
-            else
-            {
-                // hết hạn token => bắt quét lại
-                return RedirectToAction("CreateQRCode");
-            }
+            //var dtNow = DateTime.Now;
+            //if (dateExpired >= dtNow)
+            //{
+            //    return View();
+            //}
+            //else
+            //{
+            //    // hết hạn token => bắt quét lại
+            //    return RedirectToAction("CreateQRCode");
+            //}
+            return View();
         }
 
         [HttpPost]
@@ -247,6 +247,10 @@ namespace QRCodeCore.Controllers
 
 
             }
+
+            #region Ko cần Expired
+            pathQr = $"{Request.Host}/Home/InsertData";
+            #endregion
 
             var WebUri = new Url(pathQr);
             string UriPayload = WebUri.ToString();

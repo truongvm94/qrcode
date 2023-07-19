@@ -5,6 +5,7 @@
 
 $(document).ready(function () {
     $("#example").DataTable();
+    $("#main").children(".col-md-12").after("<div class='hr'><div>");
 });
 
 $(document).ready(function () {
