@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using static QRCoder.PayloadGenerator;
@@ -23,26 +24,139 @@ namespace QRCodeCore.Controllers
             _logger = logger;
         }
 
-        public IActionResult ViewData()
+        public IActionResult ListView()
         {
             try
             {
-                string tmpPath = System.IO.Path.GetTempPath();
-                string tmpFile = tmpPath + "jsondata.json";
+                var datas = new List<ListDataModel>() { 
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin1@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin2@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin3@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin4@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin5@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                     new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin1@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin2@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin3@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin4@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                    new ListDataModel() {
+                        Id = "123123",
+                        HoTen = "✕✕✕✕✕✕✕✕✕✕✕",
+                        Furigana = "✕✕✕✕",
+                        NgaySinh = DateTime.Now,
+                        SoDienThoai = "09874654321",
+                        Email = "admin5@gmail.com",
+                        DiaChi = "✕✕✕✕✕✕✕✕✕✕✕✕✕✕",
+                        ZipCode = "1000-✕✕✕",
+                        MucDich = "✕✕✕✕",
+                        TrangThai = Status.Hoàn_Thành,
+                    },
+                };
 
-
-                string jsonContent = System.IO.File.ReadAllText(tmpFile);
-
-                var jsonObject = JsonConvert.DeserializeObject<List<InsertDataModel>>(jsonContent);
-
-                //var data = new InsertDataModel();
-                return View(jsonObject);
+                return View(datas);
             }
             catch
             {
                 return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-
         }
 
         [HttpGet]
@@ -274,6 +388,22 @@ namespace QRCodeCore.Controllers
         }
 
 
+    }
+
+    public static class Utils
+    {
+        public static string ToStringFormated(this DateTime? date)
+        {
+            return date.HasValue ? date.Value.ToShortDateString() : "";
+        }
+
+        public static string ToStringJp(this DateTime? date)
+        {
+            CultureInfo culture = new CultureInfo("ja-JP", true);
+            culture.DateTimeFormat.Calendar = new JapaneseCalendar();
+
+            return date.HasValue ? date.Value.ToString("ggyy年M月d日", culture) : "";
+        }
     }
 
     //Extension method to convert Bitmap to Byte Array
